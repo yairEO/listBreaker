@@ -1,6 +1,7 @@
 /**
  * Splits a list node into multiple lists
  * BY: YAIR EVEN-OR (C) 2016
+ * https://github.com/yairEO/listBreaker
  *
  * @param  {DOM node} elm [the DOM element list to break]
  * @param  {Object} options [available keys: "lists", "itemsPerList"]
