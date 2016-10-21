@@ -11,6 +11,8 @@ Supports `<ol>` `<ul>` & `<dl>`. For `<ol>`, it automatically keep track of the 
 
 ##[Demo page](http://codepen.io/vsync/pen/ORrJgz?editors=0010)
 
+![alt tag](https://raw.githubusercontent.com/yairEO/listBreaker/master/preview.gif)
+
 ### Basic usage
 
 ```html
