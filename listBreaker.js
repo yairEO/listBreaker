@@ -96,7 +96,7 @@ ListBreaker.prototype = {
         while(arr.length) {
             var chunkSize = method == "n-items" ? chunksCount : Math.ceil(arr.length / chunksCount--),
                 chunkItem, chunk = arr.slice(0, chunkSize),
-                list = this.createList(),  // for every chunk create a new list
+                list = this.createList();  // for every chunk create a new list
             // move the chunk items in the created list
             for( chunkItem of chunk )
                 list.appendChild(chunkItem);
