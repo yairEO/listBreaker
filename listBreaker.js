@@ -7,10 +7,11 @@
  * @param  {Object} options [available keys: "lists", "itemsPerList"]
  * @return DOM fragment element
  */
-function ListBreaker( elm, method, value ){
+function ListBreaker( elm, method, value, minItemsCount ){
     this.original = elm;
     this.method = method; // "n-items" / "n-lists"
     this.methodValue = value;
+    this.methodMinItemsCount = minItemsCount;
     this.uid = Math.random().toString(36).substring(7);
 }
 
@@ -24,14 +25,16 @@ ListBreaker.prototype = {
         // if list was already broken to lists, re-make
         if( this.lists ) return;
 
-        this.lists = [];
         var listsFragment;
 
         // break list accordnig to chosen method (list-to-N-items-in-list / list-to-N-lists)
         listsFragment = this.listToLists(sourceList, this.methodValue, this.method);
+    //  if( listsFragment == sourceList ) return sourceList;
+
+        this.lists = [];
 
         for( var i=0; i < listsFragment.children.length; i++ )
-            this.lists.push( listsFragment.children[i] )
+            this.lists.push( listsFragment.children[i] );
 
          // replace the original list with the new lists
         this.original.parentNode.replaceChild(listsFragment, this.original);
@@ -55,7 +58,8 @@ ListBreaker.prototype = {
     * @return {object}               [Consolidated HTML list element]
     */
     joinLists( lists = this.lists, renderToDom ){
-        var tempList = this.createList(), lastList;
+        var tempList = this.createList(this.original.tagName),
+                lastList;
 
         if( !lists ) return;
 
@@ -88,17 +92,20 @@ ListBreaker.prototype = {
     * @param  {Number} chunksCount [Maximum number of lists]
     * @return {object}             [DOM fragment]
     */
-    listToLists(soruceList = this.original, chunksCount = this.methodValue, method) {
+    listToLists(soruceList = this.original, chunksCount = this.methodValue, method){
+        if( method == "n-lists" && soruceList.children.length < this.methodMinItemsCount )
+            return soruceList;
+
         var arr = [...soruceList.children], // convert HTMLCollection into an real Array of nodes
             fragment = document.createDocumentFragment(),
             startIdx = 1;
 
         while(arr.length) {
             var chunkSize = method == "n-items" ? chunksCount : Math.ceil(arr.length / chunksCount--),
-                chunkItem, chunk = arr.slice(0, chunkSize),
-                list = this.createList(),  // for every chunk create a new list
+                chunk = arr.slice(0, chunkSize),
+                list = this.createList(this.original.tagName); // for every chunk create a new list
             // move the chunk items in the created list
-            for( chunkItem of chunk )
+            for( var chunkItem of chunk )
                 list.appendChild(chunkItem);
 
             // set start index for "<ol>" lists
@@ -122,7 +129,7 @@ ListBreaker.prototype = {
     * @param  {text} tagName  [Tag name element to create (ol/ul/dl)]
     * @return {object}        [HTML list element]
     */
-    createList( tagName = this.original.tagName ){
+    createList( tagName = 'ul' ){
         var list = document.createElement( tagName );
         list.id = this.uid;
         return list;
