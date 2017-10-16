@@ -2,9 +2,9 @@ List Breaker - split HTML lists into lists chunks
 ========
 
 Using the CSS [columns](https://developer.mozilla.org/en-US/docs/Web/CSS/columns) wouldn't work well in some situations
-when the list is a bit more visually complex. Webkit is especiialy susceptible to visual bugs due to poor support on this
-CSS feautre. it also lacks the power to define the maximum number of items per column. It also has overflow bugs and
-giving hard times when list items are multiline or being trimmeed with CSS elipsis.
+when the list is a bit more visually complex. Webkit is especially susceptible to visual bugs due to poor support on this
+CSS feature. It also lacks the power to define the maximum number of items per column. It also has overflow bugs and
+giving hard times when list items are multiline or being trimmed with CSS ellipsis.
 
 Supports `<ol>` `<ul>` & `<dl>`. For `<ol>`, it automatically keep track of the order.
 
